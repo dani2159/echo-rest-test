@@ -40,5 +40,6 @@ func CheckLogin(username, password string) (bool, error) {
 		fmt.Println("Hash and Passsword doesn't match")
 		return false, err
 	}
+	
 	return true, nil
 }

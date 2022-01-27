@@ -2,18 +2,24 @@ package databases
 
 import (
 	"database/sql"
+	"log"
+	"os"
 
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/dani2159/echo-rest/config"
+	"github.com/joho/godotenv"
 )
 
 var db *sql.DB
-var err error
 
 func Init() {
-	conf := config.GetConfig()
 
-	connectionString := conf.DB_USERNAME + ":" + conf.DB_PASSWORD + "@tcp(" + conf.DB_HOST + ":" + conf.DB_PORT + ")/" + conf.DB_NAME
+	err := godotenv.Load(".env")
+
+	if err != nil {
+		log.Fatalf("Error loading .env file")
+	}
+
+	connectionString := os.Getenv("DB_USERNAME") + ":" + os.Getenv("DB_PASSWORD") + "@tcp(" + os.Getenv("DB_HOST") + ":" + os.Getenv("DB_PORT") + ")/" + os.Getenv("DB_NAME")
 
 	db, err = sql.Open("mysql", connectionString)
 	if err != nil {
